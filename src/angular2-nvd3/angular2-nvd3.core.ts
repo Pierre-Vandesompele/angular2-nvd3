@@ -19,7 +19,7 @@ export namespace Angular2NvD3 {
 
         public updateWithOptions(options: any, data: any) {
             // Exit if options are not yet bound
-            if (!this.viewInitialize || !options) { return; };
+            if (!this.viewInitialize || !options) { return; }
 
             let self = this;
 
@@ -30,69 +30,74 @@ export namespace Angular2NvD3 {
             this.chart = nv.models[options.chart.type]();
 
             // Generate random chart ID
+            // @ts-ignore
             this.chart.id = Math.random().toString(36).substr(2, 15);
 
             for (let key in this.chart) {
                 if (!this.chart.hasOwnProperty(key)) { continue; }
 
                 if (key[0] === '_') {
-                } else if ([
-                    'clearHighlights',
-                    'highlightPoint',
-                    'id',
-                    'options',
-                    'resizeHandler',
-                    'state',
-                    'open',
-                    'close',
-                    'tooltipContent'
-                ].indexOf(key) >= 0) {
-                } else if (key === 'dispatch') {
-                    this.configureEvents(this.chart[key], options.chart[key]);
-                } else if ([
-                    'bars',
-                    'bars1',
-                    'bars2',
-                    'boxplot',
-                    'bullet',
-                    'controls',
-                    'discretebar',
-                    'distX',
-                    'distY',
-                    'interactiveLayer',
-                    'legend',
-                    'lines',
-                    'lines1',
-                    'lines2',
-                    'multibar',
-                    'pie',
-                    'scatter',
-                    'scatters1',
-                    'scatters2',
-                    'sparkline',
-                    'stack1',
-                    'stack2',
-                    'sunburst',
-                    'tooltip',
-                    'x2Axis',
-                    'xAxis',
-                    'y1Axis',
-                    'y2Axis',
-                    'y3Axis',
-                    'y4Axis',
-                    'yAxis',
-                    'yAxis1',
-                    'yAxis2'
-                ].indexOf(key) >= 0 ||
-                // stacked is a component for stackedAreaChart, but a boolean for multiBarChart and multiBarHorizontalChart
-                (key === 'stacked' && options.chart.type === 'stackedAreaChart')) {
-                    this.configure(this.chart[key], options.chart[key], options.chart.type);
-                } else if ((key === 'xTickFormat' || key === 'yTickFormat') && options.chart.type === 'lineWithFocusChart') {
-                    // TODO: need to fix bug in nvd3
-                } else if ((key === 'tooltips') && options.chart.type === 'boxPlotChart') {
-                } else if ((key === 'tooltipXContent' || key === 'tooltipYContent') && options.chart.type === 'scatterChart') {
-                } else if (options.chart[key] === undefined || options.chart[key] === null) {
-                } else { this.chart[key](options.chart[key]); }
+                } else { // @ts-ignore
+                    if ([
+                                        'clearHighlights',
+                                        'highlightPoint',
+                                        'id',
+                                        'options',
+                                        'resizeHandler',
+                                        'state',
+                                        'open',
+                                        'close',
+                                        'tooltipContent'
+                                    ].indexOf(key) >= 0) {
+                                    } else if (key === 'dispatch') {
+                                        this.configureEvents(this.chart[key], options.chart[key]);
+                                    } else { // @ts-ignore
+                                        if ([
+                                                            'bars',
+                                                            'bars1',
+                                                            'bars2',
+                                                            'boxplot',
+                                                            'bullet',
+                                                            'controls',
+                                                            'discretebar',
+                                                            'distX',
+                                                            'distY',
+                                                            'interactiveLayer',
+                                                            'legend',
+                                                            'lines',
+                                                            'lines1',
+                                                            'lines2',
+                                                            'multibar',
+                                                            'pie',
+                                                            'scatter',
+                                                            'scatters1',
+                                                            'scatters2',
+                                                            'sparkline',
+                                                            'stack1',
+                                                            'stack2',
+                                                            'sunburst',
+                                                            'tooltip',
+                                                            'x2Axis',
+                                                            'xAxis',
+                                                            'y1Axis',
+                                                            'y2Axis',
+                                                            'y3Axis',
+                                                            'y4Axis',
+                                                            'yAxis',
+                                                            'yAxis1',
+                                                            'yAxis2'
+                                                        ].indexOf(key) >= 0 ||
+                                                        // stacked is a component for stackedAreaChart, but a boolean for multiBarChart and multiBarHorizontalChart
+                                                        (key === 'stacked' && options.chart.type === 'stackedAreaChart')) {
+                                                            this.configure(this.chart[key], options.chart[key], options.chart.type);
+                                                        } else if ((key === 'xTickFormat' || key === 'yTickFormat') && options.chart.type === 'lineWithFocusChart') {
+                                                            // TODO: need to fix bug in nvd3
+                                                        } else if ((key === 'tooltips') && options.chart.type === 'boxPlotChart') {
+                                                        } else if ((key === 'tooltipXContent' || key === 'tooltipYContent') && options.chart.type === 'scatterChart') {
+                                                        } else if (options.chart[key] === undefined || options.chart[key] === null) {
+                                                        } else { this.chart[key](options.chart[key]); }
+                                    }
+                }
             }
 
             this.updateWithData(data, options);
@@ -122,10 +127,12 @@ export namespace Angular2NvD3 {
                 // Select the current element to add <svg> element and to render the chart in
                 this.svg = d3.select(this.el.nativeElement).append('svg');
                 if (h = options.chart.height) {
+                    // @ts-ignore
                     if (!isNaN(+h)) { h += 'px'; }
                     this.svg.attr('height', h).style({height: h});
                 }
                 if (w = options.chart.width) {
+                    // @ts-ignore
                     if (!isNaN(+w)) { w += 'px'; }
                     this.svg.attr('width', w).style({width: w});
                 } else {
@@ -151,23 +158,25 @@ export namespace Angular2NvD3 {
                         this.configure(chart[key], options[key], chartType);
                     } else if (key === 'contentGenerator') {
                         if (options[key]) { chart[key](options[key]); }
-                    } else if ([
-                        'axis',
-                        'clearHighlights',
-                        'defined',
-                        'highlightPoint',
-                        'nvPointerEventsClass',
-                        'options',
-                        'rangeBand',
-                        'rangeBands',
-                        'scatter',
-                        'open',
-                        'close'
-                    ].indexOf(key) === -1) {
-                        if (options[key] === undefined || options[key] === null) {
-                        } else {
-                            chart[key](options[key]);
-                        }
+                    } else { // @ts-ignore
+                        if ([
+                                                'axis',
+                                                'clearHighlights',
+                                                'defined',
+                                                'highlightPoint',
+                                                'nvPointerEventsClass',
+                                                'options',
+                                                'rangeBand',
+                                                'rangeBands',
+                                                'scatter',
+                                                'open',
+                                                'close'
+                                            ].indexOf(key) === -1) {
+                                                if (options[key] === undefined || options[key] === null) {
+                                                } else {
+                                                    chart[key](options[key]);
+                                                }
+                                            }
                     }
                 }
 
